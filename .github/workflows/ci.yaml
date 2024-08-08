@@ -43,6 +43,11 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install Poetry
+        run: |
+          pip install --upgrade pip
+          pip install poetry
+
       - name: Install Requirements
         run: |
           poetry export -f requirements.txt --with dev --output requirements.txt
