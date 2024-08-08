@@ -1,6 +1,6 @@
 import asyncio
 
-from bs4 import ResultSet
+from bs4.element import Tag
 
 from app.utils.parsers.base import AbstractBaseParser
 
@@ -8,12 +8,11 @@ from app.utils.parsers.base import AbstractBaseParser
 class WikiParser(AbstractBaseParser):
 	"""Parser for Wikipedia tables."""
 
-	async def parse(self):
+	async def parse(self) -> Tag:
 		"""Asynchronously parse Wikipedia table content."""
 		return await asyncio.to_thread(self._sync_parse)
 
-	def _sync_parse(self) -> str:
+	def _sync_parse(self) -> Tag:
 		"""Synchronously extract table rows from Wikipedia HTML."""
 		table = self.soup.find("table", {"class": "wikitable"})
-		rows: ResultSet = table.find_all("tr")
-		return str(rows)
+		return table
