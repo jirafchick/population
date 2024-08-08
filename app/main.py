@@ -2,7 +2,8 @@ import asyncio
 
 
 async def main():
-    pass
+	pass
 
-if __name__ == '__main__':
-    asyncio.run(main())
+
+if __name__ == "__main__":
+	asyncio.run(main())

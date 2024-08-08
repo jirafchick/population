@@ -10,6 +10,28 @@ packages = [{include = "app"}]
 python = "^3.12"
 
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.6"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 127
+exclude = [
+    ".venv",
+    "migrations",
+    "locale",
+    "asgi.py",
+    "wsgi.py",
+    "__pycache__"
+]
+
+[tool.ruff.lint]
+select = ["F", "I"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "tab"
+docstring-code-format = true
