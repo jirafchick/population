@@ -16,6 +16,7 @@ lxml = "^5.2.2"
 pydantic-settings = "^2.4.0"
 sqlalchemy = "^2.0.32"
 asyncpg = "^0.29.0"
+prettytable = "^3.10.2"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.5.6"

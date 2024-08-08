@@ -24,6 +24,7 @@ def get_parse_args() -> argparse.ArgumentParser:
 
 async def main():
 	"""Handles the main entry point for the population data management application."""
+	await db.init_db()
 	parser = get_parse_args()
 	args = parser.parse_args()
 
@@ -34,12 +35,10 @@ async def main():
 	if args.command == "get_data":
 		await parse_service().get_data()
 	elif args.command == "print_data":
-		await parse_service.print_data()
-	parser.print_help()
+		await parse_service().print_data()
+	else:
+		parser.print_help()
 
 
 if __name__ == "__main__":
-	asyncio.set_event_loop(asyncio.new_event_loop())
-	loop = asyncio.get_event_loop()
-	loop.run_until_complete(db.init_db())
-	loop.run_until_complete(main())
+	asyncio.run(main())

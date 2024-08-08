@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+
+from prettytable import PrettyTable
 from sqlalchemy.sql import text
 
 from app.config import settings
@@ -47,6 +49,11 @@ class AbstractTableService(ABC):
 		async with db.session_factory() as session:
 			await session.execute(Country.__table__.insert().values(data))
 			await session.commit()
+
+	async def print_data(self):
+		async with db.session_factory() as session:
+			result = await session.execute(self.query)
+			print(self.print_table(result.fetchall()))
 
 	@staticmethod
 	def print_table(rows):
