@@ -2,7 +2,6 @@ import argparse
 import asyncio
 
 from app.database import db
-from app.services.wiki import WikiService
 
 
 def get_parse_args() -> argparse.ArgumentParser:
