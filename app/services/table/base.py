@@ -53,6 +53,7 @@ class AbstractTableService(ABC):
 			await session.commit()
 
 	async def print_data(self):
+		"""Prints the results in a formatted table."""
 		async with db.session_factory() as session:
 			result = await session.execute(self.query)
 			print(self.print_table(result.fetchall()))
