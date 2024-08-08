@@ -19,3 +19,8 @@ class Settings(BaseSettings):
 
 	class Config:
 		env_file = ".env"
+
+
+settings = Settings()
+
+__all__ = ("settings", "PostgresSettings")

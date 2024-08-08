@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from app.config import Settings
+from app.config import settings
 from app.database import db
 from app.models import Country
 from app.schemas import CountryModel
@@ -13,7 +13,7 @@ class AbstractTableService(ABC):
 	"""Abstract base class for services that fetch, parse, and save data."""
 
 	def __init__(self):
-		self.fetcher = WebPageRetriever(target_url=Settings().PARSE_URL)
+		self.fetcher = WebPageRetriever(target_url=settings.PARSE_URL)
 
 	@abstractmethod
 	def get_parser(self) -> type[AbstractBaseParser]:

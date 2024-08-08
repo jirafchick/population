@@ -2,7 +2,7 @@ from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-from app.config import PostgresSettings, Settings
+from app.config import PostgresSettings, settings
 
 Base = declarative_base()
 
@@ -27,7 +27,6 @@ class Database:
 			await conn.run_sync(Base.metadata.create_all)
 
 
-settings = Settings()
 db = Database(settings.db)
 
 __all__ = ("db", "Base")
