@@ -17,5 +17,7 @@ class Settings(BaseSettings):
 	PARSE_URL: str
 	db: PostgresSettings = PostgresSettings()
 
-	class Config:
-		env_file = ".env"
+
+settings = Settings()
+
+__all__ = ("settings", "PostgresSettings")

@@ -1,8 +1,16 @@
 import argparse
 import asyncio
+from urllib.parse import urlparse
 
-from app.database import db
-from app.services.wiki import WikiService
+from app.database import db, settings
+from app.services import parse_table_factory
+
+
+def extract_domain(parse_url: str) -> str:
+	"""Extracts the domain from the given URL."""
+	parsed_url = urlparse(parse_url)
+	domain = parsed_url.netloc
+	return domain
 
 
 def get_parse_args() -> argparse.ArgumentParser:
@@ -16,18 +24,21 @@ def get_parse_args() -> argparse.ArgumentParser:
 
 async def main():
 	"""Handles the main entry point for the population data management application."""
+	await db.init_db()
 	parser = get_parse_args()
 	args = parser.parse_args()
 
+	domain = extract_domain(settings.PARSE_URL)
+
+	parse_service = parse_table_factory(domain)
+
 	if args.command == "get_data":
-		pass
+		await parse_service().get_data()
 	elif args.command == "print_data":
-		pass
-	parser.print_help()
+		await parse_service().print_data()
+	else:
+		parser.print_help()
 
 
 if __name__ == "__main__":
-	asyncio.set_event_loop(asyncio.new_event_loop())
-	loop = asyncio.get_event_loop()
-	loop.run_until_complete(db.init_db())
-	loop.run_until_complete(main())
+	asyncio.run(main())

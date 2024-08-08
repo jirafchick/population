@@ -6,10 +6,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-
     depends_on:
       - db
+    volumes:
+      - .:/app
     command: python app/main.py get_data
+    env_file: .env
 
   db:
     image: postgres:15-alpine
@@ -24,6 +26,7 @@ services:
 
   print_data:
     image: parser_app
+    env_file: .env
     depends_on:
       - db
     command: python app/main.py print_data
