@@ -1,3 +1,3 @@
 from .wiki import WikiTabelParser
-
-__all__ =("WikiTabelParser",)
+from .base import AbstractBaseParser
+__all__ = ("WikiTabelParser", "AbstractBaseParser")
