@@ -15,4 +15,6 @@ class WikiTabelParser(AbstractBaseParser):
 	def _sync_parse(self) -> Tag:
 		"""Synchronously extract table rows from Wikipedia HTML."""
 		table = self.soup.find("table", {"class": "wikitable"})
+		for sup in table.find_all("sup"):
+			sup.decompose()
 		return table
