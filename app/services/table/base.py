@@ -65,10 +65,10 @@ class AbstractTableService(ABC):
 			field_names=[
 				"Region",
 				"Population (total)",
-				"Country (most populous)",
-				"Population most populated country",
-				"Country (least populated)",
-				"Population least populated country",
+				"Most Populous Country",
+				"Population of Most Populous Country",
+				"Least Populous Country",
+				"Population of Least Populous Country",
 			]
 		)
 		table.add_rows(rows)
