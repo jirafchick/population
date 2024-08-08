@@ -1,9 +1,9 @@
-from app.services.base import AbstractService
+from app.services.table.base import AbstractTableService
 from app.utils.extractors import WikiTableExtractor
 from app.utils.parsers import WikiTabelParser
 
 
-class WikiService(AbstractService):
+class WikiTableService(AbstractTableService):
 	"""Service class for handling data fetching, parsing, and saving from Wikipedia"""
 
 	def get_parser(self):

@@ -1,7 +1,16 @@
 import argparse
 import asyncio
+from urllib.parse import urlparse
 
-from app.database import db
+from app.database import db, settings
+from app.services import parse_table_factory
+
+
+def extract_domain(parse_url: str) -> str:
+	"""Extracts the domain from the given URL."""
+	parsed_url = urlparse(parse_url)
+	domain = parsed_url.netloc
+	return domain
 
 
 def get_parse_args() -> argparse.ArgumentParser:
@@ -18,10 +27,14 @@ async def main():
 	parser = get_parse_args()
 	args = parser.parse_args()
 
+	domain = extract_domain(settings.PARSE_URL)
+
+	parse_service = parse_table_factory(domain)
+
 	if args.command == "get_data":
-		pass
+		await parse_service().get_data()
 	elif args.command == "print_data":
-		pass
+		await parse_service.print_data()
 	parser.print_help()
 
 

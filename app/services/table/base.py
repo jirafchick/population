@@ -9,7 +9,7 @@ from app.utils.fetchers import WebPageRetriever
 from app.utils.parsers.base import AbstractBaseParser
 
 
-class AbstractService(ABC):
+class AbstractTableService(ABC):
 	"""Abstract base class for services that fetch, parse, and save data."""
 
 	def __init__(self):
@@ -25,23 +25,23 @@ class AbstractService(ABC):
 		"""Abstract method to get the extractor class."""
 		raise NotImplementedError
 
-	async def save_data(self, data):
+	async def __save_data(self, data):
 		"""Saves the extracted data to the database."""
-		await self.save_table_to_db(data=data)
+		await self.__save_table_to_db(data=data)
 
 	async def get_data(self):
 		"""Fetches, parses, and saves data."""
-		table = await self.parse_table()
-		await self.save_data(table)
+		table = await self.__parse_table()
+		await self.__save_data(table)
 
-	async def parse_table(self):
+	async def __parse_table(self):
 		"""Parses the fetched content and extracts data."""
 		parser = self.get_parser()(await self.fetcher.fetch_content())
 		extractor = self.get_extractor()(await parser.parse())
 		return await extractor.extract()
 
 	@staticmethod
-	async def save_table_to_db(data: list[CountryModel]):
+	async def __save_table_to_db(data: list[CountryModel]):
 		"""Saves a list of country data to the database."""
 		async with db.session_factory() as session:
 			await session.execute(Country.__table__.insert().values(data))
