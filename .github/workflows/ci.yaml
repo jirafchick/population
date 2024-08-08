@@ -1,0 +1,61 @@
+name: Continue Integration with parse data from Wiki
+
+on: [push]
+
+jobs:
+
+  get-print-data:
+    env:
+      PARSE_URL: 'https://en.wikipedia.org/w/index.php?title=List_of_countries_by_population_(United_Nations)&oldid=1215058959'
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: postgres
+
+    name: Test Get and Print Data
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - '5432:5432'
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Update System Requirements
+        run: sudo apt update
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set Python version
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install Requirements
+        run: |
+          poetry export -f requirements.txt --with dev --output requirements.txt
+          pip install -r requirements.txt
+
+      - name: Lint style
+        run: ruff check
+
+      - name: Build Image
+        run: docker compose build
+
+      - name: Get Data
+        run: docker compose up get_data
+
+      - name: Print Data
+        run: docker compose up print_data
