@@ -57,10 +57,10 @@ jobs:
         run: ruff check
 
       - name: Build Image
-        run: docker compose build
+        run: docker compose -f docker-compose.ci.yaml build
 
       - name: Get Data
-        run: docker compose up get_data
+        run: docker compose -f docker-compose.ci.yaml up get_data
 
       - name: Print Data
-        run: docker compose up print_data
+        run: docker compose -f docker-compose.ci.yaml up print_data

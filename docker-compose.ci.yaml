@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  get_data:
+    image: parser_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python app/main.py get_data
+
+  print_data:
+    image: parser_app
+    depends_on:
+      - db
+    command: python app/main.py print_data
