@@ -10,6 +10,7 @@ packages = [{include = "app"}]
 python = "^3.12"
 aiohttp = "^3.10.1"
 asyncio = "^3.4.3"
+beautifulsoup4 = "^4.12.3"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -23,10 +24,6 @@ build-backend = "poetry.core.masonry.api"
 line-length = 127
 exclude = [
     ".venv",
-    "migrations",
-    "locale",
-    "asgi.py",
-    "wsgi.py",
     "__pycache__"
 ]
 
