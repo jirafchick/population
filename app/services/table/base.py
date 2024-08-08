@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from prettytable import PrettyTable
+from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.sql import text
 
 from app.config import settings
@@ -47,7 +48,8 @@ class AbstractTableService(ABC):
 	async def __save_table_to_db(data: list[CountryModel]):
 		"""Saves a list of country data to the database."""
 		async with db.session_factory() as session:
-			await session.execute(Country.__table__.insert().values(data))
+			stmt = insert(Country).values(data).on_conflict_do_nothing(index_elements=["name"])
+			await session.execute(stmt)
 			await session.commit()
 
 	async def print_data(self):
