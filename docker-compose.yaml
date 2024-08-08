@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  get_data:
+    image: parser_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    depends_on:
+      - db
+    command: python app/main.py get_data
+
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+
+  print_data:
+    image: parser_app
+    depends_on:
+      - db
+    command: python app/main.py print_data
+
+volumes:
+  postgres_data:
