@@ -5,7 +5,7 @@ from bs4.element import Tag
 from app.utils.parsers.base import AbstractBaseParser
 
 
-class WikiParser(AbstractBaseParser):
+class WikiTabelParser(AbstractBaseParser):
 	"""Parser for Wikipedia tables."""
 
 	async def parse(self) -> Tag:
