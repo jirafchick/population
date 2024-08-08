@@ -1,6 +1,9 @@
 import argparse
 import asyncio
 
+from app.database import db
+from app.services.wiki import WikiService
+
 
 def get_parse_args() -> argparse.ArgumentParser:
 	"""Parses command line arguments for the population data management application."""
@@ -24,4 +27,7 @@ async def main():
 
 
 if __name__ == "__main__":
-	asyncio.run(main())
+	asyncio.set_event_loop(asyncio.new_event_loop())
+	loop = asyncio.get_event_loop()
+	loop.run_until_complete(db.init_db())
+	loop.run_until_complete(main())
