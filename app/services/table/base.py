@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from sqlalchemy.sql import text
 
 from app.config import settings
 from app.database import db
@@ -46,3 +47,36 @@ class AbstractTableService(ABC):
 		async with db.session_factory() as session:
 			await session.execute(Country.__table__.insert().values(data))
 			await session.commit()
+
+	@staticmethod
+	def print_table(rows):
+		"""Method returns table for pretty print."""
+		table = PrettyTable(
+			field_names=[
+				"Region",
+				"Population (total)",
+				"Country (most populous)",
+				"Population most populated country",
+				"Country (least populated)",
+				"Population least populated country",
+			]
+		)
+		table.add_rows(rows)
+		return table
+
+	@property
+	def query(self):
+		"""Property with sql query."""
+		query = text("""SELECT
+						region,
+						SUM(population) AS total_population,
+						MAX(name) FILTER (WHERE population = (SELECT MAX(population) FROM countries c2 WHERE c2.region = c1.region)) AS largest_country,
+						MAX(population) FILTER (WHERE population = (SELECT MAX(population) FROM countries c2 WHERE c2.region = c1.region)) AS largest_population,
+						MAX(name) FILTER (WHERE population = (SELECT MIN(population) FROM countries c2 WHERE c2.region = c1.region)) AS smallest_country,
+						MIN(population) FILTER (WHERE population = (SELECT MIN(population) FROM countries c2 WHERE c2.region = c1.region)) AS smallest_population
+					FROM
+						countries c1
+					GROUP BY
+						region;
+		""")
+		return query
